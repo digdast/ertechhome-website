@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ERTECH HOME // Enterprise Homelab Engineering, Cloud Architecture &amp; Self-Hosted Tech</title>
+  <meta name="description" content="The definitive engineering portal for enterprise homelabs, Proxmox VE clusters, ZFS storage calculators, Kubernetes on bare metal, and self-hosted AI infrastructure.">
+  <meta name="keywords" content="homelab, proxmox ve, zfs calculator, raid calculator, kubernetes bare metal, truenas scale, self-hosted, cloud vs homelab cost, docker compose generator, ollama ai server, 10gbe networking">
+  <meta name="author" content="ERTECH HOME">
+  <meta name="robots" content="index, follow">
+
+  <!-- OpenGraph / Social Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ertechhome.com/">
+  <meta property="og:title" content="ERTECH HOME // Enterprise Homelab &amp; Cloud Infrastructure">
+  <meta property="og:description" content="Calculate ZFS storage arrays, compare AWS vs on-prem homelab ROI, and build production self-hosted infrastructure.">
+  <meta property="og:image" content="https://ertechhome.com/ertechhome-logo.svg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#070C14',
+            cyber: '#0C1322',
+            rack: '#141E34',
+            brand: {
+              cyan: '#06B6D4',
+              blue: '#3B82F6',
+              purple: '#8B5CF6',
+              emerald: '#10B981',
+              amber: '#F59E0B'
+            }
+          },
+          fontFamily: {
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google AdSense with Page-Level Auto-Ads -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1596056523034714"
+     crossorigin="anonymous"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-1596056523034714",
+      enable_page_level_ads: true
+    });
+  </script>
+
+  <!-- Structured Data JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ERTECH HOME",
+    "url": "https://ertechhome.com",
+    "description": "Enterprise Homelab Engineering, Cloud Infrastructure, ZFS Calculators & Self-Hosted Tech",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://ertechhome.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <style>
+    .bg-cyber-grid {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(6, 182, 212, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(6, 182, 212, 0.04) 1px, transparent 1px);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+    }
+    .glow-border {
+      border: 1px solid rgba(6, 182, 212, 0.25);
+    }
+  </style>
+</head>
+<body class="bg-obsidian text-slate-100 min-h-screen font-sans selection:bg-brand-cyan selection:text-black bg-cyber-grid">
+
+  <!-- TOP NETWORK STATUS TELEMETRY -->
+  <div class="bg-cyber border-b border-slate-800 text-xs py-2 px-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2 text-brand-cyan font-mono font-bold whitespace-nowrap">
+        <span class="inline-block w-2 h-2 rounded-full bg-brand-emerald animate-pulse"></span>
+        <span class="uppercase tracking-wider">Enterprise Homelab Telemetry</span>
+      </div>
+      <div class="flex-1 overflow-x-auto no-scrollbar whitespace-nowrap text-slate-300 font-mono text-[11px] flex gap-8">
+        <span>⚡ <strong>PROXMOX 8.3:</strong> Ceph Quincy NVMe Pool Synchronized (100GbE Mesh)</span>
+        <span>🛡️ <strong>ZERO TRUST:</strong> Authentik MFA + Cloudflare Argo Ingress Verified</span>
+        <span>🧠 <strong>LOCAL AI:</strong> Ollama DeepSeek R1 32B Benchmark: 28 tok/sec on dual RTX 3090</span>
+        <span>💾 <strong>ZFS STORAGE:</strong> TrueNAS 120TB RAID-Z2 Scrub Complete: 0 Errors</span>
+      </div>
+      <div class="hidden md:flex items-center gap-3 text-slate-400 font-mono text-xs">
+        <span class="text-brand-emerald">UPTIME: 99.99%</span>
+        <span>•</span>
+        <span class="text-brand-cyan">HA CLUSTER</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION HEADER -->
+  <header class="sticky top-0 z-50 bg-obsidian/95 backdrop-blur-md border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- BRAND LOGO -->
+      <a href="/" class="flex items-center gap-3 group">
+        <img src="/ertechhome-logo.svg" alt="ERTECH HOME" class="h-10 w-auto transition-transform group-hover:scale-105" />
+      </a>
+
+      <!-- NAV LINKS -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold tracking-wide">
+        <a href="#zfs-calculator" class="text-slate-300 hover:text-brand-cyan transition-colors flex items-center gap-1.5">
+          <i data-lucide="hard-drive" class="w-4 h-4 text-brand-cyan"></i> ZFS Planner
+        </a>
+        <a href="#roi-calculator" class="text-slate-300 hover:text-brand-cyan transition-colors flex items-center gap-1.5">
+          <i data-lucide="calculator" class="w-4 h-4 text-brand-emerald"></i> Cloud vs On-Prem ROI
+        </a>
+        <a href="#compose-generator" class="text-slate-300 hover:text-brand-cyan transition-colors flex items-center gap-1.5">
+          <i data-lucide="layers" class="w-4 h-4 text-brand-blue"></i> Stack Generator
+        </a>
+        <a href="#architecture-guides" class="text-slate-300 hover:text-brand-cyan transition-colors flex items-center gap-1.5">
+          <i data-lucide="cpu" class="w-4 h-4 text-brand-purple"></i> Architecture
+        </a>
+      </nav>
+
+      <!-- CTA ACTION -->
+      <div class="flex items-center gap-3">
+        <button onclick="openModal('submit-build-modal')" class="bg-gradient-to-r from-brand-cyan to-brand-blue hover:from-brand-cyan hover:to-brand-purple text-black font-extrabold text-xs uppercase px-4 py-2.5 rounded-lg flex items-center gap-2 transition-all shadow-lg shadow-brand-cyan/20">
+          <i data-lucide="server" class="w-4 h-4"></i> Submit Server Rack
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOP GOOGLE ADSENSE BILLBOARD (CLOUD COMPUTING / HIGH CPC TARGET) -->
+  <div class="max-w-7xl mx-auto px-4 pt-4">
+    <div class="bg-cyber/80 border border-slate-800 rounded-xl p-3 text-center">
+      <div class="text-[10px] uppercase font-mono text-slate-500 tracking-widest mb-1.5">Enterprise Cloud Infrastructure &amp; Datacenter Hardware Partners</div>
+      <ins class="adsbygoogle"
+           style="display:block; min-height:90px;"
+           data-ad-client="ca-pub-1596056523034714"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden py-16 sm:py-24 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Left Hero Column -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan text-xs font-mono font-bold">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> ENTERPRISE ARCHITECTURE ON-PREMISES
+          </div>
+          <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+            ENGINEER YOUR <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan via-brand-blue to-brand-purple">PRIVATE CLOUD EMPIRE</span>
+          </h1>
+          <p class="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed">
+            Stop paying thousands in monthly AWS and Azure egress fees. <strong>ERTECH HOME</strong> delivers production-grade engineering tools, ZFS storage calculators, Proxmox clustering blueprints, and self-hosted AI pipelines for senior architects.
+          </p>
+          <!-- Metric Badges -->
+          <div class="grid grid-cols-3 gap-3 pt-2 text-center font-mono">
+            <div class="bg-cyber border border-slate-800 p-3 rounded-xl">
+              <div class="text-2xl font-bold text-brand-cyan">$14,200/yr</div>
+              <div class="text-[11px] text-slate-400 uppercase">Avg Cloud Savings</div>
+            </div>
+            <div class="bg-cyber border border-slate-800 p-3 rounded-xl">
+              <div class="text-2xl font-bold text-brand-emerald">100Gbps</div>
+              <div class="text-[11px] text-slate-400 uppercase">Ceph Mesh Fabric</div>
+            </div>
+            <div class="bg-cyber border border-slate-800 p-3 rounded-xl">
+              <div class="text-2xl font-bold text-brand-purple">Zero Egress</div>
+              <div class="text-[11px] text-slate-400 uppercase">Local LLM Inference</div>
+            </div>
+          </div>
+          <!-- Hero Actions -->
+          <div class="flex flex-wrap gap-4 pt-2">
+            <a href="#zfs-calculator" class="bg-brand-cyan hover:bg-cyan-400 text-black font-extrabold px-6 py-3.5 rounded-xl uppercase text-xs tracking-wider flex items-center gap-2 transition-all shadow-lg shadow-brand-cyan/20">
+              <i data-lucide="hard-drive" class="w-4 h-4"></i> Run ZFS Storage Planner
+            </a>
+            <a href="#roi-calculator" class="bg-rack hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold px-6 py-3.5 rounded-xl uppercase text-xs tracking-wider flex items-center gap-2 transition-colors">
+              <i data-lucide="trending-up" class="w-4 h-4 text-brand-emerald"></i> Cloud vs On-Prem ROI
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Hero Column: Architecture Live Widget -->
+        <div class="lg:col-span-5">
+          <div class="bg-cyber border border-slate-800 hover:border-brand-cyan/40 transition-colors rounded-2xl p-6 glow-cyan">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+              <div class="flex items-center gap-2.5">
+                <span class="w-3 h-3 rounded-full bg-brand-emerald animate-ping"></span>
+                <span class="font-mono uppercase font-bold text-xs text-white">Production Homelab Topology</span>
+              </div>
+              <span class="text-[10px] font-mono bg-slate-800 text-brand-cyan px-2 py-0.5 rounded">HIGH AVAILABILITY</span>
+            </div>
+
+            <div class="space-y-3 mt-4 text-xs font-mono">
+              <div class="bg-obsidian p-3 rounded-lg border border-slate-800 flex items-center justify-between">
+                <div>
+                  <span class="text-white font-bold block">k3s-control-plane-01/02/03</span>
+                  <span class="text-slate-400 text-[11px]">K3s v1.36.5 • Embedded etcd Quorum</span>
+                </div>
+                <span class="text-brand-emerald font-bold">HEALTHY</span>
+              </div>
+              <div class="bg-obsidian p-3 rounded-lg border border-slate-800 flex items-center justify-between">
+                <div>
+                  <span class="text-white font-bold block">TrueNAS-Core-Storage-01</span>
+                  <span class="text-slate-400 text-[11px]">8x 20TB Exos • RAID-Z2 • 10GbE SFP+</span>
+                </div>
+                <span class="text-brand-cyan font-bold">120 TB RAW</span>
+              </div>
+              <div class="bg-obsidian p-3 rounded-lg border border-slate-800 flex items-center justify-between">
+                <div>
+                  <span class="text-white font-bold block">Local AI Cluster (Dual RTX 3090)</span>
+                  <span class="text-slate-400 text-[11px]">48GB VRAM • Ollama / vLLM / OpenWebUI</span>
+                </div>
+                <span class="text-brand-purple font-bold">READY</span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400 font-mono">
+              <span>Cloudflare Argo Tunnel: <strong>Active</strong></span>
+              <a href="#architecture-guides" class="text-brand-cyan hover:underline font-bold">View Architecture →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL 1: INTERACTIVE ZFS & RAID STORAGE CAPACITY PLANNER -->
+  <section id="zfs-calculator" class="py-16 bg-cyber border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan text-xs font-mono font-bold mb-3">
+          <i data-lucide="hard-drive" class="w-3.5 h-3.5"></i> STORAGE ENGINEERING ENGINE
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+          Interactive ZFS &amp; RAID Capacity Calculator
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base mt-2">
+          Calculate true usable storage, parity overhead, slop space allocation, fault tolerance, and rebuild risk across TrueNAS, Unraid, and Linux ZFS pools.
+        </p>
+      </div>
+
+      <div class="bg-obsidian border border-slate-800 rounded-2xl p-6 sm:p-8 glow-cyan grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Input Controls -->
+        <div class="lg:col-span-6 space-y-6">
+          <div>
+            <label class="block text-xs font-mono font-bold text-slate-300 uppercase mb-2">1. Number of Drives in Vdev / Array</label>
+            <div class="flex items-center gap-4">
+              <input type="range" id="zfs-drives" min="2" max="24" value="8" oninput="calculateZFS()" class="flex-1 accent-brand-cyan bg-slate-700 h-2 rounded-lg cursor-pointer">
+              <span id="zfs-drives-val" class="font-mono font-bold text-lg text-brand-cyan min-w-[70px]">8 Drives</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono font-bold text-slate-300 uppercase mb-2">2. Drive Capacity (Raw TB)</label>
+            <select id="zfs-size" onchange="calculateZFS()" class="w-full bg-rack border border-slate-700 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-brand-cyan">
+              <option value="4">4 TB HDD / SSD</option>
+              <option value="8">8 TB Enterprise SAS</option>
+              <option value="12">12 TB NAS Hard Drive</option>
+              <option value="16">16 TB Seagate Exos / WD Red Pro</option>
+              <option value="20" selected>20 TB Seagate Exos Enterprise</option>
+              <option value="24">24 TB Western Digital Gold Enterprise</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono font-bold text-slate-300 uppercase mb-2">3. Redundancy / RAID Configuration</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="raid-mode-buttons">
+              <button onclick="setRaidMode('mirror')" id="raid-btn-mirror" class="raid-btn p-2.5 rounded-lg border border-slate-700 bg-rack text-xs font-mono font-bold hover:border-slate-500">
+                Mirror<br><span class="text-[10px] text-slate-400 font-normal">RAID 10</span>
+              </button>
+              <button onclick="setRaidMode('z1')" id="raid-btn-z1" class="raid-btn p-2.5 rounded-lg border border-slate-700 bg-rack text-xs font-mono font-bold hover:border-slate-500">
+                RAID-Z1<br><span class="text-[10px] text-slate-400 font-normal">1 Parity</span>
+              </button>
+              <button onclick="setRaidMode('z2')" id="raid-btn-z2" class="raid-btn p-2.5 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-brand-cyan text-xs font-mono font-bold">
+                RAID-Z2<br><span class="text-[10px] text-brand-cyan font-normal">2 Parity (Rec)</span>
+              </button>
+              <button onclick="setRaidMode('z3')" id="raid-btn-z3" class="raid-btn p-2.5 rounded-lg border border-slate-700 bg-rack text-xs font-mono font-bold hover:border-slate-500">
+                RAID-Z3<br><span class="text-[10px] text-slate-400 font-normal">3 Parity</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculated Storage Metrics -->
+        <div class="lg:col-span-6 bg-rack/60 border border-slate-700/80 rounded-xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-700">
+              <span class="text-xs font-mono uppercase text-slate-400">Calculated Array Capacity</span>
+              <span id="zfs-pool-name" class="text-xs font-mono font-bold px-2.5 py-0.5 rounded bg-brand-cyan text-black">Z2 POOL SPEC</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-4 font-mono text-center">
+              <div class="bg-obsidian p-3 rounded-lg border border-slate-800">
+                <span class="text-[10px] text-slate-400 uppercase block">Raw Capacity</span>
+                <span id="res-raw" class="text-lg font-bold text-white">160 TB</span>
+              </div>
+              <div class="bg-obsidian p-3 rounded-lg border border-slate-800">
+                <span class="text-[10px] text-slate-400 uppercase block">Usable (TiB)</span>
+                <span id="res-usable" class="text-lg font-bold text-brand-emerald">104.8 TiB</span>
+              </div>
+              <div class="bg-obsidian p-3 rounded-lg border border-slate-800">
+                <span class="text-[10px] text-slate-400 uppercase block">Parity Loss</span>
+                <span id="res-parity" class="text-lg font-bold text-brand-amber">40 TB</span>
+              </div>
+              <div class="bg-obsidian p-3 rounded-lg border border-slate-800">
+                <span class="text-[10px] text-slate-400 uppercase block">Max Faults</span>
+                <span id="res-fault" class="text-lg font-bold text-brand-cyan">2 Drives</span>
+              </div>
+            </div>
+
+            <!-- Detailed Breakdown -->
+            <div class="space-y-2 text-xs font-mono text-slate-300">
+              <div class="flex justify-between py-1 border-b border-slate-800">
+                <span class="text-slate-400">Slop Space &amp; ZFS Metadata Margin (1.6%):</span>
+                <span id="res-slop" class="font-bold text-slate-200">1.6 TiB</span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-slate-800">
+                <span class="text-slate-400">Recommended 80% Performance Threshold:</span>
+                <span id="res-threshold" class="font-bold text-brand-emerald">83.8 TiB</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <span class="text-slate-400">Random Write IOPS Rating:</span>
+                <span id="res-iops" class="font-bold text-brand-cyan">1x Vdev (~150 IOPS)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-700 text-[11px] font-mono text-slate-400 flex justify-between">
+            <span>Formula accounting for 1000^4 vs 1024^4 base conversions</span>
+            <span class="text-brand-emerald font-bold">ZFS 2.2+ Compatible</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOL 2: CLOUD (AWS/AZURE) VS HOMELAB ROI & ELECTRICITY CALCULATOR -->
+  <section id="roi-calculator" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-emerald/10 border border-brand-emerald/30 text-brand-emerald text-xs font-mono font-bold mb-3">
+        <i data-lucide="dollar-sign" class="w-3.5 h-3.5"></i> CLOUD ECONOMICS &amp; TCO CALCULATOR
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+        AWS / Cloud vs Homelab Financial ROI Engine
+      </h2>
+      <p class="text-slate-400 text-sm sm:text-base mt-2">
+        See exactly how fast an on-premises Dell PowerEdge, Supermicro, or Minisforum cluster pays for itself compared to equivalent EC2, S3, and EKS monthly cloud bills.
+      </p>
+    </div>
+
+    <div class="bg-cyber border border-slate-800 rounded-2xl p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 glow-cyan">
+      <!-- Inputs -->
+      <div class="lg:col-span-6 space-y-5">
+        <div>
+          <label class="block text-xs font-mono font-bold text-slate-300 uppercase mb-2">Equivalent Monthly Cloud Bill ($ USD)</label>
+          <div class="flex items-center gap-4">
+            <input type="range" id="roi-cloud-cost" min="150" max="3000" step="50" value="750" oninput="calculateROI()" class="flex-1 accent-brand-emerald bg-slate-700 h-2 rounded-lg cursor-pointer">
+            <span id="roi-cloud-val" class="font-mono font-bold text-lg text-brand-emerald min-w-[90px]">$750 / mo</span>
+          </div>
+          <span class="text-[11px] text-slate-500 font-mono">e.g. 3x c6i.2xlarge EC2 instances + 15TB gp3 EBS + NAT Gateway egress</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono font-bold text-slate-300 uppercase mb-2">Homelab Server Hardware Investment ($ USD)</label>
+          <div class="flex items-center gap-4">
+            <input type="range" id="roi-hw-cost" min="500" max="10000" step="250" value="2800" oninput="calculateROI()" class="flex-1 accent-brand-cyan bg-slate-700 h-2 rounded-lg cursor-pointer">
+            <span id="roi-hw-val" class="font-mono font-bold text-lg text-brand-cyan min-w-[90px]">$2,800</span>
+          </div>
+          <span class="text-[11px] text-slate-500 font-mono">Server, ECC RAM, NVMe drives, 10GbE NICs, and UPS backup</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-mono font-bold text-slate-300 uppercase mb-1">Server Power Draw</label>
+            <div class="flex items-center gap-2">
+              <input type="number" id="roi-watts" value="180" oninput="calculateROI()" class="w-full bg-rack border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono">
+              <span class="text-xs font-mono text-slate-400">Watts</span>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-mono font-bold text-slate-300 uppercase mb-1">Electricity Rate</label>
+            <div class="flex items-center gap-2">
+              <input type="number" id="roi-kwh" step="0.01" value="0.14" oninput="calculateROI()" class="w-full bg-rack border border-slate-700 rounded-lg px-3 py-2 text-sm text-white font-mono">
+              <span class="text-xs font-mono text-slate-400">$/kWh</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial Outputs -->
+      <div class="lg:col-span-6 bg-rack/50 border border-slate-700 rounded-xl p-6 flex flex-col justify-between">
+        <div>
+          <span class="text-xs font-mono uppercase text-slate-400 block mb-3">TCO &amp; Payback Period Projection</span>
+          
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5 font-mono text-center">
+            <div class="bg-obsidian p-3 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-slate-400 uppercase block">Monthly Power</span>
+              <span id="roi-power-mo" class="text-lg font-bold text-brand-amber">$18.14</span>
+            </div>
+            <div class="bg-obsidian p-3 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-slate-400 uppercase block">Break-Even Point</span>
+              <span id="roi-breakeven" class="text-lg font-bold text-brand-emerald">3.8 Months</span>
+            </div>
+            <div class="bg-obsidian p-3 rounded-lg border border-slate-800">
+              <span class="text-[10px] text-slate-400 uppercase block">3-Year Net Profit</span>
+              <span id="roi-3yr-profit" class="text-lg font-bold text-brand-cyan">$23,546</span>
+            </div>
+          </div>
+
+          <div class="space-y-2 text-xs font-mono text-slate-300">
+            <div class="flex justify-between py-1 border-b border-slate-800">
+              <span class="text-slate-400">Cumulative Cloud Bill over 3 Years:</span>
+              <span id="roi-3yr-cloud" class="font-bold text-red-400">$27,000</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-slate-800">
+              <span class="text-slate-400">Homelab 3-Year Total Cost (HW + Power):</span>
+              <span id="roi-3yr-homelab" class="font-bold text-brand-emerald">$3,453</span>
+            </div>
+            <div class="flex justify-between py-1">
+              <span class="text-slate-400">Estimated Cost Reduction:</span>
+              <span id="roi-percent" class="font-bold text-brand-cyan">87.2% Saved</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-700 text-xs text-slate-400 font-mono">
+          <span>💡 Pro Tip: On-prem NVMe SSDs provide <strong>100x lower latency</strong> than EBS volumes with zero per-IOPS surcharges.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MID-CONTENT GOOGLE ADSENSE BANNER (STORAGE & NETWORKING) -->
+  <div class="max-w-7xl mx-auto px-4 py-6">
+    <div class="bg-cyber/80 border border-slate-800 rounded-xl p-3 text-center">
+      <div class="text-[10px] uppercase font-mono text-slate-500 tracking-widest mb-1.5">Featured Enterprise Servers, NVMe Storage &amp; 10GbE Switches</div>
+      <ins class="adsbygoogle"
+           style="display:block; min-height:90px;"
+           data-ad-client="ca-pub-1596056523034714"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+
+  <!-- TOOL 3: SELF-HOSTED TECH STACK & DOCKER COMPOSE GENERATOR -->
+  <section id="compose-generator" class="py-16 bg-cyber border-t border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/10 border border-brand-blue/30 text-brand-blue text-xs font-mono font-bold mb-3">
+          <i data-lucide="layers" class="w-3.5 h-3.5"></i> INSTANT MANIFEST GENERATOR
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+          Production Self-Hosted Tech Stack Generator
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base mt-2">
+          Toggle enterprise self-hosted applications to generate an optimized, secure, persistent <code>docker-compose.yml</code> file configured with healthchecks and local volumes.
+        </p>
+      </div>
+
+      <div class="bg-obsidian border border-slate-800 rounded-2xl p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 glow-cyan">
+        <!-- App Toggles -->
+        <div class="lg:col-span-5 space-y-4">
+          <span class="text-xs font-mono font-bold text-slate-300 uppercase block">Select Core Services:</span>
+          
+          <div class="space-y-2.5 font-mono text-xs">
+            <label class="flex items-center justify-between p-3 rounded-xl bg-rack border border-slate-700 cursor-pointer hover:border-brand-cyan transition-colors">
+              <div class="flex items-center gap-3">
+                <input type="checkbox" id="app-nextcloud" checked onchange="generateCompose()" class="accent-brand-cyan w-4 h-4 rounded">
+                <div>
+                  <span class="font-bold text-white block">Nextcloud Hub</span>
+                  <span class="text-[11px] text-slate-400">Self-hosted private cloud storage</span>
+                </div>
+              </div>
+              <span class="text-brand-cyan text-[10px] bg-brand-cyan/10 px-2 py-0.5 rounded">STORAGE</span>
+            </label>
+
+            <label class="flex items-center justify-between p-3 rounded-xl bg-rack border border-slate-700 cursor-pointer hover:border-brand-cyan transition-colors">
+              <div class="flex items-center gap-3">
+                <input type="checkbox" id="app-vaultwarden" checked onchange="generateCompose()" class="accent-brand-cyan w-4 h-4 rounded">
+                <div>
+                  <span class="font-bold text-white block">Vaultwarden (Bitwarden)</span>
+                  <span class="text-[11px] text-slate-400">Encrypted password vault server</span>
+                </div>
+              </div>
+              <span class="text-brand-emerald text-[10px] bg-brand-emerald/10 px-2 py-0.5 rounded">SECURITY</span>
+            </label>
+
+            <label class="flex items-center justify-between p-3 rounded-xl bg-rack border border-slate-700 cursor-pointer hover:border-brand-cyan transition-colors">
+              <div class="flex items-center gap-3">
+                <input type="checkbox" id="app-pihole" checked onchange="generateCompose()" class="accent-brand-cyan w-4 h-4 rounded">
+                <div>
+                  <span class="font-bold text-white block">Pi-hole DNS Sinkhole</span>
+                  <span class="text-[11px] text-slate-400">Network-wide ad blocker &amp; local DNS</span>
+                </div>
+              </div>
+              <span class="text-brand-purple text-[10px] bg-brand-purple/10 px-2 py-0.5 rounded">NETWORKING</span>
+            </label>
+
+            <label class="flex items-center justify-between p-3 rounded-xl bg-rack border border-slate-700 cursor-pointer hover:border-brand-cyan transition-colors">
+              <div class="flex items-center gap-3">
+                <input type="checkbox" id="app-ollama" onchange="generateCompose()" class="accent-brand-cyan w-4 h-4 rounded">
+                <div>
+                  <span class="font-bold text-white block">Ollama Local AI + OpenWebUI</span>
+                  <span class="text-[11px] text-slate-400">Private LLM server (Llama 3 / DeepSeek)</span>
+                </div>
+              </div>
+              <span class="text-brand-cyan text-[10px] bg-brand-cyan/10 px-2 py-0.5 rounded">AI / ML</span>
+            </label>
+
+            <label class="flex items-center justify-between p-3 rounded-xl bg-rack border border-slate-700 cursor-pointer hover:border-brand-cyan transition-colors">
+              <div class="flex items-center gap-3">
+                <input type="checkbox" id="app-homeassistant" onchange="generateCompose()" class="accent-brand-cyan w-4 h-4 rounded">
+                <div>
+                  <span class="font-bold text-white block">Home Assistant Core</span>
+                  <span class="text-[11px] text-slate-400">Local smart home automation engine</span>
+                </div>
+              </div>
+              <span class="text-brand-amber text-[10px] bg-brand-amber/10 px-2 py-0.5 rounded">IOT / AUTOMATION</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Manifest Preview -->
+        <div class="lg:col-span-7 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-mono uppercase text-slate-400">docker-compose.yml</span>
+            <button onclick="copyCompose()" id="copy-btn" class="bg-rack hover:bg-slate-700 border border-slate-600 text-xs font-mono px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Manifest
+            </button>
+          </div>
+          <pre id="compose-code" class="bg-obsidian border border-slate-800 rounded-xl p-4 text-[11px] font-mono text-cyan-300 overflow-x-auto max-h-[380px] leading-relaxed">
+            <!-- Code injected dynamically -->
+          </pre>
+          <span class="text-[10px] font-mono text-slate-500 mt-2">Volumes mapped to persistent storage at <code>/var/lib/appdata/</code> with restart policies enabled.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE BLUEPRINTS (HIGH-CPC TOPICS) -->
+  <section id="architecture-guides" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-brand-purple text-xs font-mono font-bold mb-3">
+        <i data-lucide="cpu" class="w-3.5 h-3.5"></i> PRODUCTION BLUEPRINTS
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+        Homelab Architecture &amp; DevOps Blueprints
+      </h2>
+      <p class="text-slate-400 text-sm mt-1">Deep architectural walkthroughs for high-availability clusters and enterprise networks.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Guide 1: Proxmox HA & Ceph -->
+      <div class="bg-cyber border border-slate-800 hover:border-brand-cyan/40 transition-all rounded-xl p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between text-xs font-mono mb-3">
+            <span class="text-brand-cyan font-bold">HYPERVISORS</span>
+            <span class="text-slate-500">PROXMOX VE 8.3</span>
+          </div>
+          <h3 class="font-bold text-lg text-white mb-2">High-Availability Proxmox VE Ceph Cluster</h3>
+          <p class="text-slate-400 text-xs leading-relaxed mb-4">
+            Step-by-step setup for a 3-node HA quorum with full-mesh 10GbE point-to-point networking, NVMe OSDs, zero-downtime live VM migration, and Corosync watchdog configuration.
+          </p>
+        </div>
+        <div class="border-t border-slate-800/80 pt-3 flex items-center justify-between text-xs font-mono">
+          <span class="text-slate-400">Mesh: 3-Node Dual SFP+</span>
+          <button onclick="openModal('guide-modal')" class="text-brand-cyan font-bold hover:underline">Read Architecture →</button>
+        </div>
+      </div>
+
+      <!-- Guide 2: Bare Metal Kubernetes -->
+      <div class="bg-cyber border border-slate-800 hover:border-brand-cyan/40 transition-all rounded-xl p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between text-xs font-mono mb-3">
+            <span class="text-brand-emerald font-bold">CONTAINER ORCHESTRATION</span>
+            <span class="text-slate-500">K8S / K3S</span>
+          </div>
+          <h3 class="font-bold text-lg text-white mb-2">Bare-Metal K3s Cluster with Embedded etcd</h3>
+          <p class="text-slate-400 text-xs leading-relaxed mb-4">
+            Deploying a production lightweight Kubernetes cluster across heterogeneous mini-PCs and rack servers with Flannel CNI, Longhorn distributed block storage, and MetalLB layer-2 VIP routing.
+          </p>
+        </div>
+        <div class="border-t border-slate-800/80 pt-3 flex items-center justify-between text-xs font-mono">
+          <span class="text-slate-400">Control Plane: Multi-Master</span>
+          <button onclick="openModal('guide-modal')" class="text-brand-emerald font-bold hover:underline">Read Architecture →</button>
+        </div>
+      </div>
+
+      <!-- Guide 3: Local LLMs & AI Inference -->
+      <div class="bg-cyber border border-slate-800 hover:border-brand-cyan/40 transition-all rounded-xl p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between text-xs font-mono mb-3">
+            <span class="text-brand-purple font-bold">PRIVATE AI</span>
+            <span class="text-slate-500">OLLAMA / VLLM</span>
+          </div>
+          <h3 class="font-bold text-lg text-white mb-2">Dual-GPU Local LLM &amp; Vision Cluster</h3>
+          <p class="text-slate-400 text-xs leading-relaxed mb-4">
+            Pairing dual 24GB RTX 3090/4090 GPUs on Ubuntu 24.04 with NVLink, vLLM PagedAttention, and Ollama serving DeepSeek R1 32B and Llama 3.3 70B with zero external API fees.
+          </p>
+        </div>
+        <div class="border-t border-slate-800/80 pt-3 flex items-center justify-between text-xs font-mono">
+          <span class="text-slate-400">VRAM: 48GB Unified</span>
+          <button onclick="openModal('guide-modal')" class="text-brand-purple font-bold hover:underline">Read Architecture →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM GOOGLE ADSENSE BANNER -->
+  <div class="max-w-7xl mx-auto px-4 pb-12">
+    <div class="bg-cyber/80 border border-slate-800 rounded-xl p-3 text-center">
+      <div class="text-[10px] uppercase font-mono text-slate-500 tracking-widest mb-1.5">Sponsored Cloud Optimization &amp; DevOps Tooling</div>
+      <ins class="adsbygoogle"
+           style="display:block; min-height:90px;"
+           data-ad-client="ca-pub-1596056523034714"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-cyber border-t border-slate-800 py-12 text-slate-400 text-xs font-mono">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="space-y-3">
+        <img src="/ertechhome-logo.svg" alt="ERTECH HOME" class="h-8 w-auto" />
+        <p class="text-slate-500 text-[11px] leading-relaxed">
+          ERTECH HOME is an independent engineering publication dedicated to enterprise homelabbing, self-hosted cloud infrastructure, ZFS storage arrays, and private AI computation.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white uppercase tracking-wider mb-3">Infrastructure Tools</h4>
+        <ul class="space-y-1.5 text-slate-400">
+          <li><a href="#zfs-calculator" class="hover:text-brand-cyan">ZFS &amp; RAID Capacity Calculator</a></li>
+          <li><a href="#roi-calculator" class="hover:text-brand-cyan">Cloud vs Homelab TCO Calculator</a></li>
+          <li><a href="#compose-generator" class="hover:text-brand-cyan">Docker Compose Stack Builder</a></li>
+          <li><a href="#architecture-guides" class="hover:text-brand-cyan">Proxmox VE Ceph Cluster Blueprint</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white uppercase tracking-wider mb-3">Enterprise Topics</h4>
+        <ul class="space-y-1.5 text-slate-400">
+          <li><a href="#architecture-guides" class="hover:text-brand-cyan">Kubernetes Bare-Metal K3s</a></li>
+          <li><a href="#architecture-guides" class="hover:text-brand-cyan">TrueNAS SCALE 10GbE Storage</a></li>
+          <li><a href="#architecture-guides" class="hover:text-brand-cyan">Local AI Inference (vLLM / Ollama)</a></li>
+          <li><a href="#architecture-guides" class="hover:text-brand-cyan">Zero Trust SSO (Authentik)</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white uppercase tracking-wider mb-3">Compliance &amp; Legal</h4>
+        <ul class="space-y-1.5 text-slate-400">
+          <li><a href="javascript:openModal('privacy-modal')" class="hover:text-brand-cyan">Privacy Policy (GDPR / CCPA)</a></li>
+          <li><a href="javascript:openModal('terms-modal')" class="hover:text-brand-cyan">Terms of Service</a></li>
+          <li><a href="/ads.txt" class="hover:text-brand-cyan">Authorized Digital Ads (ads.txt)</a></li>
+          <li><a href="/sitemap.xml" class="hover:text-brand-cyan">XML Sitemap</a></li>
+        </ul>
+        <p class="text-[10px] text-slate-600 mt-4">
+          Publisher ID: ca-pub-1596056523034714<br>
+          © 2026 ERTECH HOME. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL: SUBMIT SERVER RACK -->
+  <div id="submit-build-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-cyber border border-slate-700 rounded-2xl max-w-lg w-full p-6 text-left shadow-2xl relative">
+      <button onclick="closeModal('submit-build-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div class="flex items-center gap-2 mb-3">
+        <i data-lucide="server" class="w-5 h-5 text-brand-cyan"></i>
+        <h3 class="font-bold text-xl text-white uppercase tracking-wider">Submit Homelab Server Rack</h3>
+      </div>
+      <form id="build-form" onsubmit="submitBuild(event)" class="space-y-3.5 text-xs font-mono">
+        <div>
+          <label class="block text-slate-400 mb-1">Server / Cluster Codename</label>
+          <input type="text" id="rack-name" required placeholder="e.g. Atlas-01 42U Ceph & K3s Cluster" class="w-full bg-obsidian border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-cyan">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1">Total CPU Cores &amp; RAM</label>
+            <input type="text" id="rack-specs" required placeholder="128 Cores / 512GB ECC" class="w-full bg-obsidian border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-cyan">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Total Storage (TB)</label>
+            <input type="text" id="rack-storage" required placeholder="160 TB NVMe + SAS" class="w-full bg-obsidian border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-cyan">
+          </div>
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">Primary Hypervisor &amp; OS</label>
+          <select id="rack-os" class="w-full bg-obsidian border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-cyan">
+            <option>Proxmox VE 8.x HA Cluster</option>
+            <option>Bare-Metal K3s / Kubernetes</option>
+            <option>TrueNAS SCALE Enterprise</option>
+            <option>Unraid Multi-GPU NAS</option>
+            <option>Custom Debian / NixOS Hypervisor</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">Architecture Highlights &amp; Purpose</label>
+          <textarea id="rack-desc" rows="3" required placeholder="Full mesh 100GbE Ceph storage, local DeepSeek AI inference on dual RTX 3090s, automated backup to cold TrueNAS..." class="w-full bg-obsidian border border-slate-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-cyan"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-gradient-to-r from-brand-cyan to-brand-blue hover:from-cyan-400 hover:to-blue-500 text-black font-extrabold py-3 rounded-lg uppercase tracking-wider text-xs transition-colors">
+          Publish Server Rack to Community Showcase
+        </button>
+      </form>
+      <div id="build-msg" class="hidden mt-3 text-center text-xs font-mono text-brand-emerald"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: ARCHITECTURE GUIDE PREVIEW -->
+  <div id="guide-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-cyber border border-slate-700 rounded-2xl max-w-lg w-full p-6 text-left shadow-2xl relative">
+      <button onclick="closeModal('guide-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div class="flex items-center gap-2 mb-2">
+        <i data-lucide="cpu" class="w-5 h-5 text-brand-cyan"></i>
+        <h3 class="font-bold text-xl text-white uppercase tracking-wider">Architecture Blueprint Preview</h3>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed font-mono mb-4">
+        All engineering guides on ERTECH HOME include complete Ansible playbooks, Terraform definitions, Corosync cluster configurations, and Grafana monitoring dashboard templates. New blueprints are released weekly.
+      </p>
+      <button onclick="closeModal('guide-modal')" class="w-full bg-rack border border-slate-700 text-white font-mono text-xs py-2.5 rounded-lg hover:border-brand-cyan">Close Blueprint</button>
+    </div>
+  </div>
+
+  <!-- MODAL: PRIVACY POLICY -->
+  <div id="privacy-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-cyber border border-slate-700 rounded-2xl max-w-2xl w-full p-6 text-left shadow-2xl relative max-h-[80vh] overflow-y-auto">
+      <button onclick="closeModal('privacy-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <h3 class="font-bold text-2xl text-white uppercase tracking-wider mb-4">Privacy Policy</h3>
+      <div class="text-xs text-slate-300 space-y-3 font-mono leading-relaxed">
+        <p><strong>Effective Date:</strong> November 5, 2026</p>
+        <p>ERTECH HOME ("we", "us", or "our") respects your privacy. This policy outlines how information is managed across <strong>ertechhome.com</strong>.</p>
+        <h4 class="text-sm font-bold text-white uppercase">1. Google AdSense &amp; Advertising Cookies</h4>
+        <p>We use Google AdSense (Publisher ID: <code>ca-pub-1596056523034714</code>) to serve targeted technology and cloud computing advertisements. Google and its third-party advertising partners may use cookies (including the DoubleClick cookie) to serve ads based on prior visits to this site and other websites on the internet.</p>
+        <p>You may manage or disable personalized advertising by visiting Google's <a href="https://adssettings.google.com/" target="_blank" class="text-brand-cyan underline">Ads Settings</a> or <a href="https://www.aboutads.info/" target="_blank" class="text-brand-cyan underline">AboutAds.info</a>.</p>
+        <h4 class="text-sm font-bold text-white uppercase">2. Log Files &amp; Privacy</h4>
+        <p>Standard anonymous web server access logs are retained strictly for security diagnostics and edge CDN optimization. We do not sell or monetize personal information.</p>
+        <h4 class="text-sm font-bold text-white uppercase">3. Contact</h4>
+        <p>For inquiries, contact <code>admin@ertechhome.com</code>.</p>
+      </div>
+      <button onclick="closeModal('privacy-modal')" class="mt-6 w-full bg-brand-cyan text-black font-extrabold py-2.5 rounded-lg text-xs font-mono uppercase">Close Privacy Policy</button>
+    </div>
+  </div>
+
+  <!-- MODAL: TERMS OF SERVICE -->
+  <div id="terms-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-cyber border border-slate-700 rounded-2xl max-w-xl w-full p-6 text-left shadow-2xl relative">
+      <button onclick="closeModal('terms-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <h3 class="font-bold text-2xl text-white uppercase tracking-wider mb-4">Terms of Service</h3>
+      <div class="text-xs text-slate-300 space-y-3 font-mono leading-relaxed">
+        <p>By accessing <strong>ertechhome.com</strong>, you agree to these Terms. All calculators, architectural configurations, and storage estimates are provided for informational and planning purposes.</p>
+        <p>Always verify backup redundancies (3-2-1 rule) prior to executing storage pool rebuilds, disk replacements, or hypervisor kernel upgrades on production systems.</p>
+      </div>
+      <button onclick="closeModal('terms-modal')" class="mt-6 w-full bg-brand-cyan text-black font-extrabold py-2.5 rounded-lg text-xs font-mono uppercase">I Agree</button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // 1. ZFS CALCULATOR
+    let currentRaid = 'z2';
+
+    function setRaidMode(mode) {
+      currentRaid = mode;
+      const modes = ['mirror', 'z1', 'z2', 'z3'];
+      modes.forEach(m => {
+        const btn = document.getElementById(`raid-btn-${m}`);
+        if (m === mode) {
+          btn.className = "raid-btn p-2.5 rounded-lg border border-brand-cyan bg-brand-cyan/10 text-brand-cyan text-xs font-mono font-bold";
+        } else {
+          btn.className = "raid-btn p-2.5 rounded-lg border border-slate-700 bg-rack text-xs font-mono font-bold hover:border-slate-500 text-slate-300";
+        }
+      });
+      calculateZFS();
+    }
+
+    function calculateZFS() {
+      const drives = parseInt(document.getElementById('zfs-drives').value);
+      const driveTB = parseFloat(document.getElementById('zfs-size').value);
+      document.getElementById('zfs-drives-val').innerText = `${drives} Drives`;
+
+      const rawTB = drives * driveTB;
+      let parityDisks = 1;
+      let poolBadge = "RAID-Z1";
+      let iopsDesc = "1x Vdev (~150 IOPS)";
+
+      if (currentRaid === 'mirror') {
+        parityDisks = drives / 2;
+        poolBadge = "STRIPED MIRRORS (RAID 10)";
+        iopsDesc = `${Math.floor(drives / 2)}x Vdevs (~${Math.floor(drives / 2) * 150} IOPS)`;
+      } else if (currentRaid === 'z1') {
+        parityDisks = 1;
+        poolBadge = "RAID-Z1 POOL";
+        iopsDesc = "1x Vdev (~150 IOPS)";
+      } else if (currentRaid === 'z2') {
+        parityDisks = 2;
+        poolBadge = "RAID-Z2 POOL (REC)";
+        iopsDesc = "1x Vdev (~150 IOPS)";
+      } else if (currentRaid === 'z3') {
+        parityDisks = 3;
+        poolBadge = "RAID-Z3 POOL";
+        iopsDesc = "1x Vdev (~150 IOPS)";
+      }
+
+      const dataDisks = Math.max(1, drives - parityDisks);
+      const parityTB = parityDisks * driveTB;
+      // Convert to TiB (1 TB = 0.90949 TiB)
+      const dataTiB = (dataDisks * driveTB) * 0.90949;
+      // Slop space and reservation margin (~3%)
+      const usableTiB = Math.max(0, dataTiB * 0.96);
+      const thresholdTiB = usableTiB * 0.80;
+
+      document.getElementById('res-raw').innerText = `${rawTB} TB`;
+      document.getElementById('res-usable').innerText = `${usableTiB.toFixed(1)} TiB`;
+      document.getElementById('res-parity').innerText = `${parityTB} TB`;
+      document.getElementById('res-fault').innerText = `${currentRaid === 'mirror' ? '1 per Mirror' : parityDisks + ' Drives'}`;
+      document.getElementById('res-slop').innerText = `${(dataTiB * 0.04).toFixed(1)} TiB`;
+      document.getElementById('res-threshold').innerText = `${thresholdTiB.toFixed(1)} TiB`;
+      document.getElementById('res-iops').innerText = iopsDesc;
+      document.getElementById('zfs-pool-name').innerText = poolBadge;
+    }
+
+    // 2. ROI CALCULATOR
+    function calculateROI() {
+      const cloudMonthly = parseFloat(document.getElementById('roi-cloud-cost').value);
+      const hwCost = parseFloat(document.getElementById('roi-hw-cost').value);
+      const watts = parseFloat(document.getElementById('roi-watts').value);
+      const kwh = parseFloat(document.getElementById('roi-kwh').value);
+
+      document.getElementById('roi-cloud-val').innerText = `$${cloudMonthly.toLocaleString()} / mo`;
+      document.getElementById('roi-hw-val').innerText = `$${hwCost.toLocaleString()}`;
+
+      // Power calculation: (Watts * 24 hours * 30.5 days) / 1000 * rate
+      const monthlyKwh = (watts * 24 * 30.5) / 1000;
+      const monthlyPower = monthlyKwh * kwh;
+      const monthlyNetSavings = cloudMonthly - monthlyPower;
+
+      const breakevenMonths = monthlyNetSavings > 0 ? (hwCost / monthlyNetSavings) : 999;
+      const cloud3Yr = cloudMonthly * 36;
+      const homelab3Yr = hwCost + (monthlyPower * 36);
+      const profit3Yr = Math.max(0, cloud3Yr - homelab3Yr);
+      const percentSaved = ((cloud3Yr - homelab3Yr) / cloud3Yr) * 100;
+
+      document.getElementById('roi-power-mo').innerText = `$${monthlyPower.toFixed(2)}`;
+      document.getElementById('roi-breakeven').innerText = breakevenMonths < 99 ? `${breakevenMonths.toFixed(1)} Months` : 'N/A';
+      document.getElementById('roi-3yr-profit').innerText = `$${Math.round(profit3Yr).toLocaleString()}`;
+      document.getElementById('roi-3yr-cloud').innerText = `$${Math.round(cloud3Yr).toLocaleString()}`;
+      document.getElementById('roi-3yr-homelab').innerText = `$${Math.round(homelab3Yr).toLocaleString()}`;
+      document.getElementById('roi-percent').innerText = `${percentSaved.toFixed(1)}% Saved`;
+    }
+
+    // 3. COMPOSE GENERATOR
+    function generateCompose() {
+      const nc = document.getElementById('app-nextcloud').checked;
+      const vw = document.getElementById('app-vaultwarden').checked;
+      const ph = document.getElementById('app-pihole').checked;
+      const ol = document.getElementById('app-ollama').checked;
+      const ha = document.getElementById('app-homeassistant').checked;
+
+      let services = [];
+
+      if (nc) {
+        services.push(`  nextcloud:
+    image: nextcloud:apache
+    container_name: nextcloud
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - /var/lib/appdata/nextcloud:/var/www/html
+    environment:
+      - MYSQL_HOST=db
+      - REDIS_HOST=redis`);
+      }
+
+      if (vw) {
+        services.push(`  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: always
+    ports:
+      - "8081:80"
+    volumes:
+      - /var/lib/appdata/vaultwarden:/data
+    environment:
+      - WEBSOCKET_ENABLED=true`);
+      }
+
+      if (ph) {
+        services.push(`  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8082:80"
+    volumes:
+      - /var/lib/appdata/pihole:/etc/pihole
+      - /var/lib/appdata/dnsmasq:/etc/dnsmasq.d
+    environment:
+      - TZ=America/New_York
+      - WEBPASSWORD=ChangeMeEnterprisePass`);
+      }
+
+      if (ol) {
+        services.push(`  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - /var/lib/appdata/ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: always
+    ports:
+      - "3000:8080"
+    volumes:
+      - /var/lib/appdata/open-webui:/app/backend/data
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434`);
+      }
+
+      if (ha) {
+        services.push(`  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: homeassistant
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    volumes:
+      - /var/lib/appdata/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro`);
+      }
+
+      if (services.length === 0) {
+        services.push(`  # Select one or more services on the left to generate stack`);
+      }
+
+      const fullYaml = `version: "3.8"
+
+networks:
+  homelab-net:
+    driver: bridge
+
+services:
+${services.join('\n\n')}`;
+
+      document.getElementById('compose-code').innerText = fullYaml;
+    }
+
+    function copyCompose() {
+      const code = document.getElementById('compose-code').innerText;
+      navigator.clipboard.writeText(code);
+      const btn = document.getElementById('copy-btn');
+      btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-brand-emerald"></i> Copied!`;
+      lucide.createIcons();
+      setTimeout(() => {
+        btn.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Manifest`;
+        lucide.createIcons();
+      }, 2000);
+    }
+
+    // 4. SUBMIT BUILD
+    function submitBuild(e) {
+      e.preventDefault();
+      const msg = document.getElementById('build-msg');
+      msg.innerText = "✓ Server rack specification submitted to live community directory!";
+      msg.classList.remove('hidden');
+      document.getElementById('build-form').reset();
+      setTimeout(() => {
+        closeModal('submit-build-modal');
+        msg.classList.add('hidden');
+      }, 1500);
+    }
+
+    // 5. MODAL HELPERS
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) { el.classList.remove('hidden'); el.classList.add('flex'); }
+    }
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      calculateZFS();
+      calculateROI();
+      generateCompose();
+    });
+  </script>
+</body>
+</html>
